@@ -1,5 +1,6 @@
 package com.rosterforge.algorithms.models;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Employee {
@@ -29,5 +30,18 @@ public class Employee {
 
     public int getMaxShiftsPerWeek() {
         return maxShiftsPerWeek;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return getId() == employee.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }

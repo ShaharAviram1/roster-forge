@@ -8,4 +8,11 @@ public class Roster {
     public Roster(Set<Assignment> assignments) {
         this.assignments = assignments;
     }
+
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+    public void addAssignment(Assignment assignment) {
+        assignments.add(assignment);
+    }
 }

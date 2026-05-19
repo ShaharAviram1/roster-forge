@@ -1,5 +1,6 @@
 package com.rosterforge.algorithms.models;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Shift {
@@ -23,5 +24,18 @@ public class Shift {
 
     public Set<ShiftRequirement> getRequirements() {
         return requirements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this ==o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shift shift = (Shift) o;
+        return getDayIndex() == shift.getDayIndex() && getShiftType() == shift.getShiftType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDayIndex(), getShiftType());
     }
 }
