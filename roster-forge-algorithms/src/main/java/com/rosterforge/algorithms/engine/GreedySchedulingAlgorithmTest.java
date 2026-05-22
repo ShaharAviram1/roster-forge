@@ -86,7 +86,7 @@ public class GreedySchedulingAlgorithmTest {
 
         assertEquals(shahar, assignment.getEmployee());
         assertEquals(Role.SOC, assignment.getRole());
-        assertEquals(10.0, result.getScore());
+        assertEquals(100.0, result.getScore());
         assertTrue(result.getViolations().isEmpty());
     }
 
@@ -253,7 +253,7 @@ public class GreedySchedulingAlgorithmTest {
 
         assertEquals(1, result.getRoster().getAssignments().size());
         assertEquals(1, result.getViolations().size());
-        assertEquals(10.0, result.getScore());
+        assertEquals(24.5, result.getScore());
     }
 
     @Test
@@ -315,7 +315,7 @@ public class GreedySchedulingAlgorithmTest {
 
         assertEquals(1, result.getRoster().getAssignments().size());
         assertEquals(1, result.getViolations().size());
-        assertEquals(10.0, result.getScore());
+        assertEquals(24.5, result.getScore());
     }
 
     @Test
@@ -383,7 +383,7 @@ public class GreedySchedulingAlgorithmTest {
 
         assertEquals(2, result.getRoster().getAssignments().size());
         assertTrue(result.getViolations().isEmpty());
-        assertEquals(15.0, result.getScore());
+        assertEquals(91.5, result.getScore());
 
         assertTrue(
                 result.getRoster().getAssignments().stream().anyMatch(

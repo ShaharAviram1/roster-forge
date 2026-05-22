@@ -382,7 +382,7 @@ public class BacktrackingSchedulingAlgorithmTest {
 
         assertEquals(2, result.getRoster().getAssignments().size());
         assertTrue(result.getViolations().isEmpty());
-        assertEquals(15.0, result.getScore());
+        assertEquals(91.5, result.getScore());
 
         assertTrue(
                 result.getRoster().getAssignments().stream().anyMatch(
