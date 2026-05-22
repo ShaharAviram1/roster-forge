@@ -94,12 +94,12 @@ public class AlgorithmComparisonDemo {
         ConstraintValidator validator = new ConstraintValidator(constraints);
         RosterScorer scorer = new AvailabilityRosterScorer();
 
-        GreedySchedulingAlgorithm greedyAlgorithm = new GreedySchedulingAlgorithm(validator, scorer);
-        BacktrackingSchedulingAlgorithm backtrackingAlgorithm = new BacktrackingSchedulingAlgorithm(validator, scorer);
+        FordFulkersonAlgoMaxFlow fordFulkerson = new FordFulkersonAlgoMaxFlow(validator, scorer);
+        EdmondsKarpAlgoMaxFlow edmondsKarp = new EdmondsKarpAlgoMaxFlow(validator, scorer);
 
         printExpectedRoster();
-        printResult("Greedy", greedyAlgorithm.generateRoster(input));
-        printResult("Backtracking", backtrackingAlgorithm.generateRoster(input));
+        printResult("Ford-Fulkerson", fordFulkerson.generateRoster(input));
+        printResult("Edmonds-Karp", edmondsKarp.generateRoster(input));
     }
 
     private static void addPreferences(

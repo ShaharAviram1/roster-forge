@@ -4,22 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>roster-forge-algorithms</artifactId>
+    <groupId>com.hit</groupId>
+    <artifactId>RosterForgeApp</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <dependencies>
+        <!-- Algorithm module JAR (Ford-Fulkerson + Edmonds-Karp Max Flow) -->
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <groupId>com.rosterforge</groupId>
+            <artifactId>roster-forge-algorithms</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/AlgorithmModule.jar</systemPath>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>compile</scope>
-        </dependency>
+
+        <!-- JUnit 5 for ServiceTest -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -27,8 +26,8 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
-        <testSourceDirectory>src/main/test</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -45,6 +44,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
