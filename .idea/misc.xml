@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/roster-forge-algorithms/pom.xml" />
         <option value="$PROJECT_DIR$/roster-forge-server/pom.xml" />
         <option value="$PROJECT_DIR$/roster-forge-client/pom.xml" />
+        <option value="$PROJECT_DIR$/RosterForgeApp/pom.xml" />
       </list>
     </option>
   </component>
