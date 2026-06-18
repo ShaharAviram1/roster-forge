@@ -25,6 +25,89 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RosterServiceTest {
 
+    @Nested
+    class ShiftServiceTests {
+
+        private ShiftService service;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            File tmp = File.createTempFile("shifts", ".dat");
+            tmp.deleteOnExit();
+            IDao<ShiftDm> dao = new DaoFileImpl<>(tmp.getAbsolutePath(), ShiftDm::getId);
+            service = new ShiftService(dao);
+        }
+
+        @Test
+        void addAndRetrieve() {
+            service.addShift(new ShiftDm(1, 0, "MORNING", Map.of("SHIFT_MANAGER", 1)));
+            ShiftDm found = service.getShift(1);
+            assertNotNull(found);
+            assertEquals("MORNING", found.getShiftType());
+        }
+
+        @Test
+        void getAllReturnsAllSaved() {
+            service.addShift(new ShiftDm(1, 0, "MORNING", Map.of("SHIFT_MANAGER", 1)));
+            service.addShift(new ShiftDm(2, 1, "EVENING", Map.of("SOC", 1)));
+            assertEquals(2, service.getAllShifts().size());
+        }
+
+        @Test
+        void removeDeletesShift() {
+            service.addShift(new ShiftDm(1, 0, "MORNING", Map.of("SHIFT_MANAGER", 1)));
+            service.removeShift(1);
+            assertNull(service.getShift(1));
+        }
+
+        @Test
+        void findByIdReturnsNullForMissing() {
+            assertNull(service.getShift(99));
+        }
+    }
+
+    @Nested
+    class AvailabilityPreferenceServiceTests {
+
+        private AvailabilityPreferenceService service;
+
+        @BeforeEach
+        void setUp() throws Exception {
+            File tmp = File.createTempFile("preferences", ".dat");
+            tmp.deleteOnExit();
+            IDao<AvailabilityPreferenceDm> dao = new DaoFileImpl<>(
+                    tmp.getAbsolutePath(), AvailabilityPreferenceDm::getId);
+            service = new AvailabilityPreferenceService(dao);
+        }
+
+        @Test
+        void addAndRetrieve() {
+            service.addPreference(new AvailabilityPreferenceDm(1, 1, 10, "DARK_GREEN"));
+            AvailabilityPreferenceDm found = service.getPreference(1);
+            assertNotNull(found);
+            assertEquals("DARK_GREEN", found.getAvailabilityLevel());
+        }
+
+        @Test
+        void getAllReturnsAllSaved() {
+            service.addPreference(new AvailabilityPreferenceDm(1, 1, 10, "DARK_GREEN"));
+            service.addPreference(new AvailabilityPreferenceDm(2, 2, 10, "YELLOW"));
+            assertEquals(2, service.getAllPreferences().size());
+        }
+
+        @Test
+        void removeDeletesPreference() {
+            service.addPreference(new AvailabilityPreferenceDm(1, 1, 10, "DARK_GREEN"));
+            service.removePreference(1);
+            assertNull(service.getPreference(1));
+        }
+
+        @Test
+        void findByIdReturnsNullForMissing() {
+            assertNull(service.getPreference(99));
+        }
+    }
+
     private static ConstraintValidator buildValidator() {
         return new ConstraintValidator(Set.of(
                 new RedAvailabilityConstraint(),

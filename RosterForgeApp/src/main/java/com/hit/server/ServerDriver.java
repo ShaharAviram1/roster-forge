@@ -1,0 +1,62 @@
+package com.hit.server;
+
+import com.hit.dao.DaoFileImpl;
+import com.hit.dao.IDao;
+import com.hit.dm.AvailabilityPreferenceDm;
+import com.hit.dm.EmployeeDm;
+import com.hit.dm.ShiftDm;
+import com.hit.service.AvailabilityPreferenceService;
+import com.hit.service.EmployeeService;
+import com.hit.service.RosterService;
+import com.hit.service.ShiftService;
+import com.rosterforge.algorithms.constraints.*;
+import com.rosterforge.algorithms.engine.EdmondsKarpAlgoMaxFlow;
+import com.rosterforge.algorithms.engine.IAlgoMaxFlow;
+import com.rosterforge.algorithms.scoring.AvailabilityRosterScorer;
+import com.rosterforge.algorithms.validation.ConstraintValidator;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.Set;
+
+public class ServerDriver {
+
+    private static final int PORT = 8080;
+
+    public static void main(String[] args) throws IOException {
+        Properties config = loadConfig();
+
+        IDao<EmployeeDm> employeeDao = new DaoFileImpl<>(
+                config.getProperty("employees"), EmployeeDm::getId);
+        IDao<ShiftDm> shiftDao = new DaoFileImpl<>(
+                config.getProperty("shifts"), ShiftDm::getId);
+        IDao<AvailabilityPreferenceDm> preferenceDao = new DaoFileImpl<>(
+                config.getProperty("preferences"), AvailabilityPreferenceDm::getId);
+
+        ConstraintValidator validator = new ConstraintValidator(Set.of(
+                new RedAvailabilityConstraint(),
+                new ConsecutiveShiftConstraint(),
+                new MaxShiftsPerWeekConstraint(),
+                new SameShiftDuplicateAssignmentConstraint()
+        ));
+
+        IAlgoMaxFlow algorithm = new EdmondsKarpAlgoMaxFlow(validator, new AvailabilityRosterScorer());
+
+        EmployeeService employeeService     = new EmployeeService(employeeDao);
+        ShiftService shiftService           = new ShiftService(shiftDao);
+        AvailabilityPreferenceService preferenceService =
+                new AvailabilityPreferenceService(preferenceDao);
+        RosterService rosterService         = new RosterService(employeeDao, shiftDao, preferenceDao, algorithm);
+
+        new Thread(new Server(PORT, employeeService, shiftService, preferenceService, rosterService)).start();
+    }
+
+    private static Properties loadConfig() throws IOException {
+        Properties config = new Properties();
+        try (InputStream is = ServerDriver.class.getClassLoader().getResourceAsStream("datasource.txt")) {
+            config.load(is);
+        }
+        return config;
+    }
+}

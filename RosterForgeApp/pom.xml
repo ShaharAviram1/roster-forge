@@ -18,6 +18,13 @@
             <systemPath>${project.basedir}/lib/AlgorithmModule.jar</systemPath>
         </dependency>
 
+        <!-- Gson for JSON serialization in the server layer -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
         <!-- JUnit 5 for ServiceTest -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -19,24 +19,24 @@ public class DaoFileImpl<T extends Serializable> implements IDao<T> {
     }
 
     @Override
-    public void save(T obj) {
+    public synchronized void save(T obj) {
         Map<Long, T> store = readAll();
         store.put(idExtractor.getId(obj), obj);
         writeAll(store);
     }
 
     @Override
-    public T findById(long id) {
+    public synchronized T findById(long id) {
         return readAll().get(id);
     }
 
     @Override
-    public List<T> findAll() {
+    public synchronized List<T> findAll() {
         return new ArrayList<>(readAll().values());
     }
 
     @Override
-    public void delete(long id) {
+    public synchronized void delete(long id) {
         Map<Long, T> store = readAll();
         store.remove(id);
         writeAll(store);
