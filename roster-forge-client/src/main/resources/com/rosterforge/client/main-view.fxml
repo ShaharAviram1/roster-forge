@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.rosterforge.client.controller.MainController">
+
+    <!-- ── Header ── -->
+    <top>
+        <Label text="RosterForge" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-padding: 12 16 12 16;"/>
+    </top>
+
+    <!-- ── Tab area ── -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <!-- ══════════════ EMPLOYEES TAB ══════════════ -->
+            <Tab text="Employees">
+                <content>
+                    <VBox spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                        <!-- Form row -->
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <TextField fx:id="empIdField"        promptText="ID"              prefWidth="60"/>
+                            <TextField fx:id="empNameField"      promptText="Name"            prefWidth="130"/>
+                            <TextField fx:id="empRolesField"     promptText="Roles (comma-separated)" prefWidth="240"/>
+                            <TextField fx:id="empMaxShiftsField" promptText="Max shifts"      prefWidth="80"/>
+                            <Button text="Add"     onAction="#addEmployee"/>
+                            <Button text="Remove"  onAction="#removeEmployee"/>
+                            <Button text="Update"  onAction="#updateEmployee"/>
+                            <Button text="Refresh" onAction="#loadEmployees"/>
+                        </HBox>
+
+                        <Label fx:id="empStatusLabel" style="-fx-text-fill: grey;"/>
+
+                        <TableView fx:id="empTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="empIdCol"        text="ID"         prefWidth="60"/>
+                                <TableColumn fx:id="empNameCol"      text="Name"       prefWidth="150"/>
+                                <TableColumn fx:id="empRolesCol"     text="Roles"      prefWidth="260"/>
+                                <TableColumn fx:id="empMaxShiftsCol" text="Max Shifts" prefWidth="80"/>
+                            </columns>
+                            <placeholder><Label text="No employees loaded."/></placeholder>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <!-- ══════════════ SHIFTS TAB ══════════════ -->
+            <Tab text="Shifts">
+                <content>
+                    <VBox spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                        <!-- Form row -->
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <TextField fx:id="shiftIdField"    promptText="ID"              prefWidth="60"/>
+                            <TextField fx:id="shiftDayField"   promptText="Day (0=Sun…)"    prefWidth="100"/>
+                            <TextField fx:id="shiftTypeField"  promptText="Type (MORNING…)" prefWidth="120"/>
+                            <TextField fx:id="shiftRolesField" promptText="Roles (ROLE:n,…)" prefWidth="200"/>
+                            <Button text="Add"     onAction="#addShift"/>
+                            <Button text="Remove"  onAction="#removeShift"/>
+                            <Button text="Refresh" onAction="#loadShifts"/>
+                        </HBox>
+
+                        <Label fx:id="shiftStatusLabel" style="-fx-text-fill: grey;"/>
+
+                        <TableView fx:id="shiftTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="shiftIdCol"    text="ID"           prefWidth="60"/>
+                                <TableColumn fx:id="shiftDayCol"   text="Day"          prefWidth="60"/>
+                                <TableColumn fx:id="shiftTypeCol"  text="Type"         prefWidth="120"/>
+                                <TableColumn fx:id="shiftRolesCol" text="Requirements" prefWidth="300"/>
+                            </columns>
+                            <placeholder><Label text="No shifts loaded."/></placeholder>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <!-- ══════════════ PREFERENCES TAB ══════════════ -->
+            <Tab text="Preferences">
+                <content>
+                    <VBox spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                        <!-- Form row -->
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <TextField fx:id="prefIdField"      promptText="ID"          prefWidth="60"/>
+                            <TextField fx:id="prefEmpIdField"   promptText="Employee ID" prefWidth="90"/>
+                            <TextField fx:id="prefShiftIdField" promptText="Shift ID"    prefWidth="70"/>
+                            <ComboBox  fx:id="prefLevelCombo"   promptText="Level"       prefWidth="130"/>
+                            <Button text="Add"     onAction="#addPreference"/>
+                            <Button text="Remove"  onAction="#removePreference"/>
+                            <Button text="Refresh" onAction="#loadPreferences"/>
+                        </HBox>
+
+                        <Label fx:id="prefStatusLabel" style="-fx-text-fill: grey;"/>
+
+                        <TableView fx:id="prefTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="prefIdCol"      text="ID"          prefWidth="60"/>
+                                <TableColumn fx:id="prefEmpIdCol"   text="Employee ID" prefWidth="100"/>
+                                <TableColumn fx:id="prefShiftIdCol" text="Shift ID"    prefWidth="80"/>
+                                <TableColumn fx:id="prefLevelCol"   text="Level"       prefWidth="130"/>
+                            </columns>
+                            <placeholder><Label text="No preferences loaded."/></placeholder>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <!-- ══════════════ ROSTER TAB ══════════════ -->
+            <Tab text="Roster">
+                <content>
+                    <VBox spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Button text="Generate Roster" onAction="#generateRoster"
+                                    style="-fx-font-weight: bold;"/>
+                        </HBox>
+
+                        <Label fx:id="rosterStatusLabel" style="-fx-text-fill: grey;"/>
+
+                        <TableView fx:id="rosterTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="rosterEmpCol"   text="Employee" prefWidth="200"/>
+                                <TableColumn fx:id="rosterShiftCol" text="Shift"    prefWidth="200"/>
+                                <TableColumn fx:id="rosterRoleCol"  text="Role"     prefWidth="200"/>
+                            </columns>
+                            <placeholder><Label text="Press Generate Roster to compute assignments."/></placeholder>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

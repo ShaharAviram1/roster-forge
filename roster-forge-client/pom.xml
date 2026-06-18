@@ -5,32 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.rosterforge</groupId>
-    <artifactId>RosterForgeApp</artifactId>
+    <artifactId>roster-forge-client</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        <!-- Algorithm module JAR (Ford-Fulkerson + Edmonds-Karp Max Flow) -->
         <dependency>
-            <groupId>com.rosterforge</groupId>
-            <artifactId>roster-forge-algorithms</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/AlgorithmModule.jar</systemPath>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>23</version>
         </dependency>
-
-        <!-- Gson for JSON serialization in the server layer -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>23</version>
+        </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
-        </dependency>
-
-        <!-- JUnit 5 for ServiceTest -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -41,13 +33,16 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <release>17</release>
+                    <release>23</release>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.rosterforge.client/com.rosterforge.client.RosterForgeClientApp</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
