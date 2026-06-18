@@ -14,6 +14,12 @@ public class ShiftDm {
     public String getShiftType() { return shiftType; }
     public Map<String, Integer> getRoleRequirements() { return roleRequirements; }
 
+    private static final String[] DAY_NAMES =
+            {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
     @Override
-    public String toString() { return "Day " + dayIndex + " - " + shiftType; }
+    public String toString() {
+        String day = (dayIndex >= 0 && dayIndex < DAY_NAMES.length) ? DAY_NAMES[dayIndex] : "Day " + dayIndex;
+        return day + " - " + shiftType;
+    }
 }

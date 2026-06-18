@@ -2,16 +2,18 @@ package com.rosterforge.client;
 
 import com.google.gson.JsonObject;
 
+import java.util.Map;
+
 public class Request {
 
-    private final String action;
+    private final Map<String, String> headers;
     private final JsonObject body;
 
     public Request(String action, JsonObject body) {
-        this.action = action;
+        this.headers = Map.of("action", action);
         this.body = body;
     }
 
-    public String getAction() { return action; }
+    public String getAction() { return headers.get("action"); }
     public JsonObject getBody() { return body; }
 }

@@ -8,3 +8,6 @@ out/
 
 # Maven
 target/
+
+# Runtime data files
+*.dat

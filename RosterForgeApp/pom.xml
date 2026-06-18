@@ -14,8 +14,6 @@
             <groupId>com.rosterforge</groupId>
             <artifactId>roster-forge-algorithms</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/AlgorithmModule.jar</systemPath>
         </dependency>
 
         <!-- Gson for JSON serialization in the server layer -->
@@ -48,6 +46,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>com.rosterforge.server.ServerDriver</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

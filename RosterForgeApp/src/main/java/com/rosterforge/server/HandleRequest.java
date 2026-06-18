@@ -43,18 +43,27 @@ public class HandleRequest implements Runnable {
             Scanner reader     = new Scanner(new InputStreamReader(socket.getInputStream()));
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true)
         ) {
-            String requestJson = reader.nextLine();
-            Request request    = gson.fromJson(requestJson, Request.class);
+            try {
+                String requestJson = reader.nextLine();
+                System.out.println("[SERVER] Received: " + requestJson);
 
-            IController controller = createController(request.getAction());
-            Response response      = controller != null
-                    ? controller.handleRequest(request)
-                    : Response.error("Unknown action: " + request.getAction());
+                Request request    = gson.fromJson(requestJson, Request.class);
 
-            writer.println(gson.toJson(response));
+                IController controller = createController(request.getAction());
+                Response response      = controller != null
+                        ? controller.handleRequest(request)
+                        : Response.error("Unknown action: " + request.getAction());
 
+                String responseJson = gson.toJson(response);
+                System.out.println("[SERVER] Sending: " + responseJson);
+                writer.println(responseJson);
+            } catch (Exception e) {
+                System.err.println("[SERVER] Error: " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                e.printStackTrace();
+                writer.println(gson.toJson(Response.error("Server error: " + e.getMessage())));
+            }
         } catch (IOException e) {
-            System.err.println("HandleRequest error: " + e.getMessage());
+            System.err.println("Stream error: " + e.getMessage());
         } finally {
             try { socket.close(); } catch (IOException ignored) {}
         }

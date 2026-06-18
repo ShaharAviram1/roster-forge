@@ -26,7 +26,7 @@ public class ServerClient {
         ) {
             writer.println(gson.toJson(request));
             return gson.fromJson(reader.nextLine(), Response.class);
-        } catch (IOException e) {
+        } catch (IOException | java.util.NoSuchElementException e) {
             return Response.error("Connection failed: " + e.getMessage());
         }
     }
