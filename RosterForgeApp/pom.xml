@@ -9,11 +9,15 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        <!-- Algorithm module JAR (Ford-Fulkerson + Edmonds-Karp Max Flow) -->
+        <!-- Algorithm module as an internal JAR in lib/ (Ford-Fulkerson + Edmonds-Karp Max Flow).
+             Bundled with the project so the server builds standalone, without needing the
+             algorithm module installed in the local Maven repository. -->
         <dependency>
             <groupId>com.rosterforge</groupId>
             <artifactId>roster-forge-algorithms</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/AlgorithmModule.jar</systemPath>
         </dependency>
 
         <!-- Gson for JSON serialization in the server layer -->

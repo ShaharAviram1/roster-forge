@@ -1,0 +1,390 @@
+<title>RosterForge — מצגת פרויקט</title>
+<style>
+  :root {
+    --paper: #f5f7f9;
+    --card: #ffffff;
+    --ink: #1b2432;
+    --muted: #566072;
+    --faint: #8b93a1;
+    --line: #dde3ea;
+    --line-strong: #c4ccd6;
+    --accent: #2f6f8f;
+    --accent-soft: #e5eef2;
+    --accent-ink: #1e5063;
+    --lv-red: #c0492f;
+    --lv-yellow: #cf9b2b;
+    --lv-lgreen: #6faf5a;
+    --lv-dgreen: #2f7d4f;
+    --shadow: 0 1px 2px rgba(27,36,50,.05), 0 6px 20px rgba(27,36,50,.05);
+    --sans: "Segoe UI", "Helvetica Neue", Arial, system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #11161f;
+      --card: #1a212d;
+      --ink: #e8ecf2;
+      --muted: #9aa4b4;
+      --faint: #6b7686;
+      --line: #2a3340;
+      --line-strong: #3a4553;
+      --accent: #6bb3d0;
+      --accent-soft: #1d3540;
+      --accent-ink: #a9d6e6;
+      --lv-red: #d76a52;
+      --lv-yellow: #dcb257;
+      --lv-lgreen: #82c06f;
+      --lv-dgreen: #4f9d6f;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #f5f7f9; --card: #ffffff; --ink: #1b2432; --muted: #566072;
+    --faint: #8b93a1; --line: #dde3ea; --line-strong: #c4ccd6; --accent: #2f6f8f;
+    --accent-soft: #e5eef2; --accent-ink: #1e5063; --lv-red: #c0492f;
+    --lv-yellow: #cf9b2b; --lv-lgreen: #6faf5a; --lv-dgreen: #2f7d4f;
+    --shadow: 0 1px 2px rgba(27,36,50,.05), 0 6px 20px rgba(27,36,50,.05);
+  }
+  :root[data-theme="dark"] {
+    --paper: #11161f; --card: #1a212d; --ink: #e8ecf2; --muted: #9aa4b4;
+    --faint: #6b7686; --line: #2a3340; --line-strong: #3a4553; --accent: #6bb3d0;
+    --accent-soft: #1d3540; --accent-ink: #a9d6e6; --lv-red: #d76a52;
+    --lv-yellow: #dcb257; --lv-lgreen: #82c06f; --lv-dgreen: #4f9d6f;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); direction: rtl; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .ltr { direction: ltr; unicode-bidi: isolate; }
+  .mono { font-family: var(--mono); direction: ltr; unicode-bidi: isolate; letter-spacing: -.01em; }
+
+  .slide {
+    min-height: 100vh; scroll-snap-align: start;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(28px, 6vh, 72px) clamp(20px, 6vw, 96px);
+    border-bottom: 1px solid var(--line);
+  }
+  .inner { width: 100%; max-width: 1040px; margin: 0 auto; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
+    color: var(--accent-ink); background: var(--accent-soft);
+    padding: 5px 11px; border-radius: 4px; margin-bottom: 20px;
+  }
+  .eyebrow .n { color: var(--accent); }
+  h1 { font-size: clamp(34px, 6vw, 60px); line-height: 1.08; margin: 0; font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
+  h2 { font-size: clamp(26px, 4vw, 40px); line-height: 1.12; margin: 0 0 14px; font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
+  .lead { font-size: clamp(16px, 1.6vw, 19px); color: var(--muted); max-width: 62ch; margin: 0 0 30px; }
+
+  /* Cover */
+  .cover h1 { max-width: 15ch; }
+  .cover .sub { font-size: clamp(17px, 2vw, 21px); color: var(--muted); margin: 18px 0 0; }
+  .brandline { width: 56px; height: 4px; background: var(--accent); border-radius: 2px; margin-bottom: 30px; }
+  .meta {
+    margin-top: 44px; display: flex; flex-wrap: wrap; gap: 12px 40px;
+    padding-top: 26px; border-top: 1px solid var(--line);
+    font-size: 15px; color: var(--muted);
+  }
+  .meta b { color: var(--ink); font-weight: 600; }
+  .placeholder {
+    color: var(--accent-ink); background: var(--accent-soft);
+    padding: 1px 8px; border-radius: 3px; font-family: var(--mono);
+    font-size: 13px; direction: ltr; unicode-bidi: isolate;
+  }
+
+  /* Feature grid */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 18px 18px 20px; box-shadow: var(--shadow);
+  }
+  .card h3 { margin: 0 0 6px; font-size: 16px; font-weight: 650; }
+  .card p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
+  .card .tag { font-family: var(--mono); font-size: 11px; color: var(--faint); display: block; margin-top: 10px; }
+
+  /* Legends row */
+  .legends { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+  @media (max-width: 820px) { .legends { grid-template-columns: 1fr; } }
+  .panel { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; background: var(--card); }
+  .panel h4 { margin: 0 0 12px; font-size: 13px; font-weight: 650; color: var(--muted); letter-spacing: .02em; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; padding: 5px 11px; border-radius: 20px;
+    border: 1px solid var(--line-strong); background: var(--paper);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .chip .code { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+
+  /* Architecture stack */
+  .stack { display: flex; flex-direction: column; gap: 0; }
+  .layer {
+    background: var(--card); border: 1px solid var(--line-strong);
+    border-radius: 10px; padding: 15px 20px; box-shadow: var(--shadow);
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px;
+  }
+  .layer .lname { font-weight: 650; font-size: 16px; min-width: 190px; }
+  .layer .lname small { display: block; font-weight: 400; font-size: 12px; color: var(--faint); margin-top: 2px; }
+  .layer .parts { font-family: var(--mono); font-size: 12.5px; color: var(--muted); direction: ltr; unicode-bidi: isolate; }
+  .layer.algo { border-color: var(--accent); background: var(--accent-soft); }
+  .connector {
+    text-align: center; color: var(--accent); font-size: 12px;
+    padding: 7px 0; font-family: var(--mono); direction: ltr;
+  }
+  .connector span { display: inline-block; border: 1px dashed var(--line-strong); border-radius: 20px; padding: 3px 14px; background: var(--paper); }
+  .patterns { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .patterns .pl { font-size: 13px; color: var(--muted); margin-left: 6px; }
+  .ptag { font-family: var(--mono); font-size: 12px; padding: 4px 10px; border-radius: 5px; background: var(--accent-soft); color: var(--accent-ink); }
+
+  /* Challenges list */
+  .clist { display: flex; flex-direction: column; gap: 4px; counter-reset: c; }
+  .crow {
+    display: flex; gap: 18px; padding: 16px 4px; border-top: 1px solid var(--line);
+  }
+  .crow:last-child { border-bottom: 1px solid var(--line); }
+  .crow .idx {
+    counter-increment: c; font-family: var(--mono); font-size: 13px;
+    color: var(--accent); flex: none; width: 26px; padding-top: 2px;
+  }
+  .crow .idx::before { content: counter(c, decimal-leading-zero); }
+  .crow .body h3 { margin: 0 0 3px; font-size: 16.5px; font-weight: 650; }
+  .crow .body p { margin: 0; font-size: 14.5px; color: var(--muted); max-width: 72ch; }
+
+  /* Nav dots */
+  .nav { position: fixed; inset-inline-start: 18px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 11px; z-index: 5; }
+  .nav a { width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); border: none; padding: 0; display: block; transition: background .2s, transform .2s; }
+  .nav a:hover { transform: scale(1.3); }
+  .nav a.on { background: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  @media (max-width: 700px) { .nav { display: none; } }
+
+  .pagemark { position: fixed; bottom: 16px; inset-inline-end: 22px; font-family: var(--mono); font-size: 12px; color: var(--faint); z-index: 5; }
+
+  @media print {
+    html { scroll-snap-type: none; }
+    .slide { min-height: auto; page-break-after: always; border: none; }
+    .nav, .pagemark { display: none; }
+  }
+</style>
+
+<nav class="nav" aria-label="ניווט שקופיות">
+  <a href="#s0" class="on" aria-label="שער"></a>
+  <a href="#s1" aria-label="תיאור פונקציונלי"></a>
+  <a href="#s2" aria-label="ארכיטקטורה"></a>
+  <a href="#s3" aria-label="אתגרים"></a>
+</nav>
+<div class="pagemark" id="pagemark">01 / 04</div>
+
+<!-- COVER -->
+<section class="slide cover" id="s0">
+  <div class="inner">
+    <div class="brandline"></div>
+    <h1>RosterForge — מערכת שיבוץ משמרות</h1>
+    <p class="sub">שיבוץ אוטומטי של סידור עבודה בארכיטקטורת שרת–לקוח עם יחידת אלגוריתמיקה</p>
+    <div class="meta">
+      <span>קורס: <b>פיתוח מתקדם ב-<span class="ltr">Java</span></b></span>
+      <span>מכון: <b>מכון טכנולוגי חולון — <span class="ltr">HIT</span></b></span>
+      <span>סמסטר: <b>ב׳ <span class="ltr">2026</span></b></span>
+    </div>
+    <div class="meta" style="margin-top:16px;border:none;padding-top:0">
+      <span>מגיש/ה: <span class="placeholder">שם מלא</span> · ת״ז <span class="placeholder">000000000</span></span>
+      <span>מגיש/ה: <span class="placeholder">שם מלא</span> · ת״ז <span class="placeholder">000000000</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 1 — FUNCTIONAL -->
+<section class="slide" id="s1">
+  <div class="inner">
+    <span class="eyebrow"><span class="n">01</span> · שקופית ראשונה</span>
+    <h2>תיאור פונקציונלי של המערכת</h2>
+    <p class="lead">מערכת לניהול ושיבוץ אוטומטי של משמרות עבור מרכז אבטחה. מנהל המשמרות מנהל עובדים, משמרות והעדפות זמינות — והמערכת מייצרת סידור עבודה המכבד אילוצים קשיחים וממקסם את העדפות העובדים.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>ניהול עובדים</h3>
+        <p>פעולות <span class="ltr">CRUD</span> מלאות — הוספה, עדכון, מחיקה ושליפה — לפי תפקיד.</p>
+        <span class="tag">EmployeeService</span>
+      </div>
+      <div class="card">
+        <h3>ניהול משמרות</h3>
+        <p>משמרות בוקר / ערב / לילה, עם דרישת מספר עובדים לכל תפקיד במשמרת.</p>
+        <span class="tag">ShiftService</span>
+      </div>
+      <div class="card">
+        <h3>העדפות זמינות</h3>
+        <p>כל עובד מסמן רמת זמינות לכל משמרת — מ״חסום״ ועד ״מעדיף מאוד״.</p>
+        <span class="tag">AvailabilityPreferenceService</span>
+      </div>
+      <div class="card">
+        <h3>יצירת סידור עבודה</h3>
+        <p>הרצת אלגוריתם זרימה מקסימלית עם ניקוד העדפות להפקת סידור אופטימלי.</p>
+        <span class="tag">RosterService · IAlgoMaxFlow</span>
+      </div>
+      <div class="card">
+        <h3>אכיפת אילוצים</h3>
+        <p>ולידציה של ארבעה אילוצים קשיחים לפני קיבוע הסידור הסופי.</p>
+        <span class="tag">ConstraintValidator</span>
+      </div>
+      <div class="card">
+        <h3>ממשק גרפי</h3>
+        <p>לקוח <span class="ltr">JavaFX</span> המתחבר לשרת ומריץ את כל הפעולות דרך <span class="ltr">Socket</span>.</p>
+        <span class="tag">RosterForgeClient</span>
+      </div>
+    </div>
+
+    <div class="legends">
+      <div class="panel">
+        <h4>רמות זמינות</h4>
+        <div class="chips">
+          <span class="chip"><span class="dot" style="background:var(--lv-red)"></span>חסום <span class="code">RED</span></span>
+          <span class="chip"><span class="dot" style="background:var(--lv-yellow)"></span>בכפוף <span class="code">YELLOW</span></span>
+          <span class="chip"><span class="dot" style="background:var(--lv-lgreen)"></span>מוכן <span class="code">LIGHT_GREEN</span></span>
+          <span class="chip"><span class="dot" style="background:var(--lv-dgreen)"></span>מעדיף <span class="code">DARK_GREEN</span></span>
+        </div>
+      </div>
+      <div class="panel">
+        <h4>תפקידים ואילוצים קשיחים</h4>
+        <div class="chips">
+          <span class="chip">אבטחה <span class="code">SECURITY</span></span>
+          <span class="chip">חדר בקרה <span class="code">SOC</span></span>
+          <span class="chip">אחראי משמרת <span class="code">SHIFT_MANAGER</span></span>
+        </div>
+        <div class="chips" style="margin-top:10px">
+          <span class="chip">אין שיבוץ ב״אדום״</span>
+          <span class="chip">אין משמרות רצופות</span>
+          <span class="chip">מקסימום משמרות בשבוע</span>
+          <span class="chip">אין שיבוץ כפול</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2 — ARCHITECTURE -->
+<section class="slide" id="s2">
+  <div class="inner">
+    <span class="eyebrow"><span class="n">02</span> · שקופית שנייה</span>
+    <h2>ארכיטקטורת רכיבים — <span class="ltr">High Level</span></h2>
+    <p class="lead">שרת–לקוח בשכבות: הלקוח הגרפי פונה לשרת בפרוטוקול <span class="ltr">TCP</span> עם הודעות <span class="ltr">JSON</span>. השרת מנתב לבקרים, השירותים מחזיקים את הלוגיקה העסקית, והמאגר והאלגוריתמיקה נצרכים דרך ממשקים.</p>
+
+    <div class="stack">
+      <div class="layer">
+        <span class="lname">שכבת תצוגה — לקוח<small>פרויקט נפרד · JavaFX · MVC</small></span>
+        <span class="parts">RosterForgeClientApp · MainController · main-view.fxml · ServerClient</span>
+      </div>
+      <div class="connector"><span>TCP · JSON (gson) · Socket ↑↓</span></div>
+      <div class="layer">
+        <span class="lname">שכבת תקשורת — שרת<small>ServerSocket · Runnable</small></span>
+        <span class="parts">Server · HandleRequest · Request / Response · ServerDriver</span>
+      </div>
+      <div class="connector"><span>Factory → ניתוב לפי action ↓</span></div>
+      <div class="layer">
+        <span class="lname">שכבת בקרים<small>Controllers</small></span>
+        <span class="parts">Employee · Shift · Preference · Roster Controller (IController)</span>
+      </div>
+      <div class="connector"><span>קריאות API ↓</span></div>
+      <div class="layer">
+        <span class="lname">שכבת שירותים<small>Business Logic</small></span>
+        <span class="parts">EmployeeService · ShiftService · AvailabilityPreferenceService · RosterService</span>
+      </div>
+      <div class="connector"><span>IDao ↓ · אלגוריתם ↘</span></div>
+      <div class="layer">
+        <span class="lname">שכבת מאגר<small>Repository · אחסון קבצים</small></span>
+        <span class="parts">IDao&lt;T&gt; · DaoFileImpl · datasource.txt · Decorator על streams</span>
+      </div>
+      <div class="layer algo">
+        <span class="lname">יחידת אלגוריתמיקה<small>JAR חיצוני · AlgorithmModule</small></span>
+        <span class="parts">IAlgoMaxFlow (Strategy) · AbstractAlgoMaxFlow · FordFulkerson · EdmondsKarp · ConstraintValidator · RosterScorer</span>
+      </div>
+    </div>
+
+    <div class="patterns">
+      <span class="pl">תבניות עיצוב בשימוש:</span>
+      <span class="ptag">Strategy</span>
+      <span class="ptag">Factory</span>
+      <span class="ptag">Decorator</span>
+      <span class="ptag">MVC</span>
+      <span class="ptag">Open / Closed</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3 — CHALLENGES -->
+<section class="slide" id="s3">
+  <div class="inner">
+    <span class="eyebrow"><span class="n">03</span> · שקופית שלישית</span>
+    <h2>אתגרים בפיתוח</h2>
+    <p class="lead">האתגרים המרכזיים שעמדנו מולם, וההחלטות התכנוניות שפתרו אותם.</p>
+
+    <div class="clist">
+      <div class="crow">
+        <div class="idx"></div>
+        <div class="body">
+          <h3>מידול השיבוץ כבעיית זרימה ברשת</h3>
+          <p>תרגום דרישות תפקיד, זמינות עובדים ואילוצים לגרף מקור–בור, כך שאלגוריתם <span class="ltr">Max Flow</span> מפיק שיבוץ תקף וממוקסם.</p>
+        </div>
+      </div>
+      <div class="crow">
+        <div class="idx"></div>
+        <div class="body">
+          <h3>שני מימושים מתחלפים באמצעות <span class="ltr">Strategy</span></h3>
+          <p>הפשטת ה־<span class="ltr">API</span> ל־<span class="ltr">IAlgoMaxFlow</span> כך ש־<span class="ltr">Ford-Fulkerson</span> ו־<span class="ltr">Edmonds-Karp</span> ניתנים להחלפה מבלי לשנות את שכבת השירות — שמירה על עקרון <span class="ltr">Open/Closed</span>.</p>
+        </div>
+      </div>
+      <div class="crow">
+        <div class="idx"></div>
+        <div class="body">
+          <h3>אילוצים קשיחים מול העדפות רכות</h3>
+          <p>הפרדה בין ולידציה (מותר / אסור) לבין ניקוד (טוב יותר / פחות), כדי לאפשר הוספת אילוצים והעדפות בעתיד ללא שינוי הליבה.</p>
+        </div>
+      </div>
+      <div class="crow">
+        <div class="idx"></div>
+        <div class="body">
+          <h3>פרוטוקול תקשורת גנרי</h3>
+          <p>עיצוב <span class="ltr">Request / Response</span> מבוססי <span class="ltr">JSON</span> שאינם תלויים בשפת המימוש, עם ניתוב דינמי של בקרים באמצעות <span class="ltr">Factory</span>.</p>
+        </div>
+      </div>
+      <div class="crow">
+        <div class="idx"></div>
+        <div class="body">
+          <h3>הפרדת לקוח–שרת נקייה</h3>
+          <p>הלקוח הגרפי מכיל אך ורק רכיבי <span class="ltr">UI</span> ותקשורת <span class="ltr">Socket</span> — כל הלוגיקה העסקית מתבצעת בצד השרת.</p>
+        </div>
+      </div>
+      <div class="crow">
+        <div class="idx"></div>
+        <div class="body">
+          <h3>אחסון מבוסס קבצים עם גנריות</h3>
+          <p>מימוש <span class="ltr">IDao&lt;T&gt;</span> מעל <span class="ltr">streams</span> עטופים ב־<span class="ltr">Decorator</span>, לשמירה ושליפה גנרית של כל מודל נתונים ללא בסיס נתונים.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const dots = [...document.querySelectorAll('.nav a')];
+  const slides = [...document.querySelectorAll('.slide')];
+  const mark = document.getElementById('pagemark');
+  const pad = n => String(n + 1).padStart(2, '0');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = slides.indexOf(e.target);
+        dots.forEach((d, di) => d.classList.toggle('on', di === i));
+        mark.textContent = pad(i) + ' / ' + pad(slides.length - 1);
+      }
+    });
+  }, { threshold: 0.55 });
+  slides.forEach(s => io.observe(s));
+</script>
