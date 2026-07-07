@@ -11,3 +11,6 @@ target/
 
 # Runtime data files
 *.dat
+
+# Personal submission details (kept local, never committed)
+SUBMITTERS.txt
