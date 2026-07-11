@@ -14,7 +14,7 @@
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE">
 
-            <!-- ══════════════ EMPLOYEES ══════════════ -->
+            <!-- Employees tab -->
             <Tab text="Employees">
                 <content>
                     <VBox spacing="10">
@@ -47,7 +47,7 @@
                 </content>
             </Tab>
 
-            <!-- ══════════════ SHIFTS ══════════════ -->
+            <!-- Shifts tab -->
             <Tab text="Shifts">
                 <content>
                     <VBox spacing="10">
@@ -81,7 +81,7 @@
                 </content>
             </Tab>
 
-            <!-- ══════════════ PREFERENCES ══════════════ -->
+            <!-- Preferences tab -->
             <Tab text="Preferences">
                 <content>
                     <VBox spacing="10">
@@ -111,7 +111,7 @@
                 </content>
             </Tab>
 
-            <!-- ══════════════ ROSTER ══════════════ -->
+            <!-- Roster tab -->
             <Tab text="Roster">
                 <content>
                     <VBox spacing="10">

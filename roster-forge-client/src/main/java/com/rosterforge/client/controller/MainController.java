@@ -26,21 +26,21 @@ public class MainController {
     private final Gson gson = new Gson();
     private long nextId = System.currentTimeMillis();
 
-    // ── Employee ──
+    // employee
     @FXML private TextField  empNameField, empMaxShiftsField;
     @FXML private CheckBox   empRoleShiftManager, empRoleSoc, empRoleSecurity;
     @FXML private TableView<EmployeeDm>             empTable;
     @FXML private TableColumn<EmployeeDm, String>   empNameCol, empRolesCol, empMaxShiftsCol;
     @FXML private Label empStatusLabel;
 
-    // ── Shift ──
+    // shift
     @FXML private ComboBox<String> shiftDayCombo, shiftTypeCombo;
     @FXML private TextField        shiftMgrCount, shiftSocCount, shiftSecCount;
     @FXML private TableView<ShiftDm>            shiftTable;
     @FXML private TableColumn<ShiftDm, String>  shiftDayCol, shiftTypeCol, shiftRolesCol;
     @FXML private Label shiftStatusLabel;
 
-    // ── Preference ──
+    // preference
     @FXML private ComboBox<EmployeeDm>              prefEmployeeCombo;
     @FXML private ComboBox<ShiftDm>                 prefShiftCombo;
     @FXML private ComboBox<String>                  prefLevelCombo;
@@ -50,7 +50,7 @@ public class MainController {
 
     private AvailabilityPreferenceDm selectedPref = null;
 
-    // ── Roster ──
+    // roster
     @FXML private TableView<RosterRow>             rosterTable;
     @FXML private TableColumn<RosterRow, String>   rosterEmpCol, rosterShiftCol, rosterRoleCol;
     @FXML private Label    rosterStatusLabel;
@@ -58,25 +58,25 @@ public class MainController {
 
     @FXML
     private void initialize() {
-        // Employee columns
+        // employee columns
         empNameCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
         empRolesCol.setCellValueFactory(c -> new SimpleStringProperty(
                 String.join(", ", c.getValue().getQualifiedRoles())));
         empMaxShiftsCol.setCellValueFactory(c -> new SimpleStringProperty(
                 String.valueOf(c.getValue().getMaxShiftsPerWeek())));
 
-        // Clicking an employee row fills the form
+        // click a row to fill the form
         empTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, old, emp) -> { if (emp != null) fillEmpForm(emp); });
 
-        // Shift columns
+        // shift columns
         shiftDayCol.setCellValueFactory(c -> new SimpleStringProperty(
                 DAYS.get(c.getValue().getDayIndex())));
         shiftTypeCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getShiftType()));
         shiftRolesCol.setCellValueFactory(c -> new SimpleStringProperty(
                 formatRoles(c.getValue().getRoleRequirements())));
 
-        // Preference columns — look up names from loaded combos
+        // preference columns
         prefEmpCol.setCellValueFactory(c -> new SimpleStringProperty(
                 findEmployeeName(c.getValue().getEmployeeId())));
         prefShiftCol.setCellValueFactory(c -> new SimpleStringProperty(
@@ -84,16 +84,16 @@ public class MainController {
         prefLevelCol.setCellValueFactory(c -> new SimpleStringProperty(
                 c.getValue().getAvailabilityLevel()));
 
-        // Roster columns
+        // roster columns
         rosterEmpCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEmployeeName()));
         rosterShiftCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getShift()));
         rosterRoleCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getRole()));
 
-        // Clicking a preference row fills the form for editing
+        // click a row to edit
         prefTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, old, pref) -> { if (pref != null) fillPrefForm(pref); });
 
-        // Combo setup
+        // combos
         shiftDayCombo.setItems(FXCollections.observableArrayList(DAYS));
         shiftTypeCombo.setItems(FXCollections.observableArrayList(SHIFT_TYPES));
         prefLevelCombo.setItems(FXCollections.observableArrayList(LEVELS));
@@ -103,7 +103,6 @@ public class MainController {
         loadPreferences();
     }
 
-    // ══ Employee ══
 
     @FXML
     private void addEmployee() {
@@ -171,7 +170,6 @@ public class MainController {
         setStatus(empStatusLabel, true, "Loaded " + arr.length + " employees.");
     }
 
-    // ══ Shift ══
 
     @FXML
     private void addShift() {
@@ -224,7 +222,6 @@ public class MainController {
         setStatus(shiftStatusLabel, true, "Loaded " + arr.length + " shifts.");
     }
 
-    // ══ Preference ══
 
     @FXML
     private void addPreference() {
@@ -292,7 +289,6 @@ public class MainController {
         setStatus(prefStatusLabel, true, "Loaded " + arr.length + " preferences.");
     }
 
-    // ══ Roster ══
 
     @FXML
     private void generateRoster() {
@@ -325,7 +321,6 @@ public class MainController {
         }
     }
 
-    // ══ Helpers ══
 
     private List<String> selectedRoles() {
         List<String> roles = new ArrayList<>();
@@ -414,7 +409,6 @@ public class MainController {
         label.setStyle(ok ? "-fx-text-fill: green;" : "-fx-text-fill: red;");
     }
 
-    // ══ Roster row model ══
 
     public static class RosterRow {
         private final String employeeName, shift, role;
